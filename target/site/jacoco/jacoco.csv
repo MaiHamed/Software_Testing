@@ -1,0 +1,8 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Testing_project,com.example,App,7,0,0,0,3,0,2,0,2,0
+Testing_project,com.example,AccountStatus,0,27,0,0,0,5,0,1,0,1
+Testing_project,com.example,BankSystemGUI,700,0,30,0,150,0,26,0,11,0
+Testing_project,com.example,AccountController,13,14,0,0,2,4,2,2,2,2
+Testing_project,com.example,CreditScoreFeature,11,52,5,9,6,17,5,4,0,2
+Testing_project,com.example,Account,7,84,0,12,3,20,2,13,2,7
+Testing_project,com.example,TransactionProcessor,40,9,13,1,8,3,9,2,2,2

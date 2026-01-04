@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BankSystemGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing_project</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">BankSystemGUI.java</span></div><h1>BankSystemGUI.java</h1><pre class="source lang-java linenums">package com.example;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+<span class="nc" id="L21">public class BankSystemGUI {</span>
+
+    public static void main(String[] args) {
+
+        // ---------- Backend Setup ----------
+<span class="nc" id="L26">        CreditService creditService = clientId -&gt; 620; // Mock credit score</span>
+<span class="nc" id="L27">        AccountController controller = new AccountController();</span>
+<span class="nc" id="L28">        CreditScoreFeature creditFeature = new CreditScoreFeature(creditService, controller);</span>
+
+        // ---------- Accounts ----------
+<span class="nc" id="L31">        List&lt;Account&gt; accounts = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L32">        accounts.add(new Account(&quot;1001&quot;, &quot;Hania&quot;, 1000.0, AccountStatus.VERIFIED));</span>
+<span class="nc" id="L33">        accounts.add(new Account(&quot;1002&quot;, &quot;Mai&quot;, 500.0, AccountStatus.VERIFIED));</span>
+<span class="nc" id="L34">        accounts.add(new Account(&quot;1003&quot;, &quot;Maryam&quot;, 300.0, AccountStatus.SUSPENDED));</span>
+<span class="nc" id="L35">        accounts.add(new Account(&quot;1004&quot;, &quot;Nourhan&quot;, 800.0, AccountStatus.UNVERIFIED));</span>
+
+        // Map for quick lookup (Transfers)
+<span class="nc" id="L38">        Map&lt;String, Account&gt; accountMap = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (Account acc : accounts) {</span>
+<span class="nc" id="L40">            accountMap.put(acc.getClientId(), acc);</span>
+<span class="nc" id="L41">        }</span>
+
+        // Transaction History (ClientId -&gt; Logs)
+<span class="nc" id="L44">        Map&lt;String, List&lt;String&gt;&gt; historyMap = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for (Account acc : accounts) {</span>
+<span class="nc" id="L46">            historyMap.put(acc.getClientId(), new ArrayList&lt;&gt;());</span>
+<span class="nc" id="L47">        }</span>
+
+        // Current User (index-based switching)
+<span class="nc" id="L50">        final int[] currentIndex = {0};</span>
+<span class="nc" id="L51">        final Account[] currentAccount = {accounts.get(0)};</span>
+
+        // ---------- GUI Setup ----------
+<span class="nc" id="L54">        JFrame frame = new JFrame(&quot;Bank System - Term Project&quot;);</span>
+<span class="nc" id="L55">        frame.setSize(600, 500);</span>
+<span class="nc" id="L56">        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L57">        frame.setLayout(new BorderLayout(10, 10));</span>
+
+        // ---------- Top Panel ----------
+<span class="nc" id="L60">        JPanel infoPanel = new JPanel(new GridLayout(5, 2, 5, 5));</span>
+<span class="nc" id="L61">        infoPanel.setBorder(BorderFactory.createTitledBorder(&quot;Account Details&quot;));</span>
+
+<span class="nc" id="L63">        infoPanel.add(new JLabel(&quot;Client Name:&quot;));</span>
+<span class="nc" id="L64">        JTextField nameField = new JTextField();</span>
+<span class="nc" id="L65">        nameField.setEditable(false);</span>
+<span class="nc" id="L66">        infoPanel.add(nameField);</span>
+
+<span class="nc" id="L68">        infoPanel.add(new JLabel(&quot;Account Number:&quot;));</span>
+<span class="nc" id="L69">        JTextField accountNumField = new JTextField();</span>
+<span class="nc" id="L70">        accountNumField.setEditable(false);</span>
+<span class="nc" id="L71">        infoPanel.add(accountNumField);</span>
+
+<span class="nc" id="L73">        infoPanel.add(new JLabel(&quot;Balance:&quot;));</span>
+<span class="nc" id="L74">        JTextField balanceField = new JTextField();</span>
+<span class="nc" id="L75">        balanceField.setEditable(false);</span>
+<span class="nc" id="L76">        infoPanel.add(balanceField);</span>
+
+<span class="nc" id="L78">        infoPanel.add(new JLabel(&quot;Status:&quot;));</span>
+<span class="nc" id="L79">        JLabel statusLabel = new JLabel();</span>
+<span class="nc" id="L80">        statusLabel.setForeground(Color.BLUE);</span>
+<span class="nc" id="L81">        infoPanel.add(statusLabel);</span>
+
+<span class="nc" id="L83">        infoPanel.add(new JLabel(&quot;Active User:&quot;));</span>
+<span class="nc" id="L84">        JButton switchUserButton = new JButton(&quot;Switch User&quot;);</span>
+<span class="nc" id="L85">        infoPanel.add(switchUserButton);</span>
+
+<span class="nc" id="L87">        frame.add(infoPanel, BorderLayout.NORTH);</span>
+
+        // ---------- Action Panel ----------
+<span class="nc" id="L90">        JPanel actionPanel = new JPanel(new GridLayout(3, 2, 8, 8));</span>
+<span class="nc" id="L91">        actionPanel.setBorder(BorderFactory.createTitledBorder(&quot;Actions&quot;));</span>
+
+<span class="nc" id="L93">        actionPanel.add(new JLabel(&quot;Amount:&quot;));</span>
+<span class="nc" id="L94">        JTextField amountField = new JTextField();</span>
+<span class="nc" id="L95">        actionPanel.add(amountField);</span>
+
+<span class="nc" id="L97">        JButton depositButton = new JButton(&quot;Deposit&quot;);</span>
+<span class="nc" id="L98">        JButton withdrawButton = new JButton(&quot;Withdraw&quot;);</span>
+<span class="nc" id="L99">        JButton transferButton = new JButton(&quot;Transfer&quot;);</span>
+<span class="nc" id="L100">        JButton viewStatementButton = new JButton(&quot;View Statement&quot;);</span>
+
+<span class="nc" id="L102">        actionPanel.add(depositButton);</span>
+<span class="nc" id="L103">        actionPanel.add(withdrawButton);</span>
+<span class="nc" id="L104">        actionPanel.add(transferButton);</span>
+<span class="nc" id="L105">        actionPanel.add(viewStatementButton);</span>
+
+<span class="nc" id="L107">        frame.add(actionPanel, BorderLayout.CENTER);</span>
+
+        // ---------- Notification Panel ----------
+<span class="nc" id="L110">        JTextArea notificationBox = new JTextArea(5, 40);</span>
+<span class="nc" id="L111">        notificationBox.setEditable(false);</span>
+<span class="nc" id="L112">        JScrollPane scrollPane = new JScrollPane(notificationBox);</span>
+<span class="nc" id="L113">        scrollPane.setBorder(BorderFactory.createTitledBorder(&quot;Notifications&quot;));</span>
+<span class="nc" id="L114">        frame.add(scrollPane, BorderLayout.SOUTH);</span>
+
+        // ---------- Helper Methods ----------
+<span class="nc" id="L117">        Runnable updateUI = () -&gt; {</span>
+<span class="nc" id="L118">            Account acc = currentAccount[0];</span>
+
+<span class="nc" id="L120">            nameField.setText(acc.getClientName());</span>
+<span class="nc" id="L121">            accountNumField.setText(acc.getClientId());</span>
+<span class="nc" id="L122">            balanceField.setText(String.valueOf(acc.getBalance()));</span>
+<span class="nc" id="L123">            statusLabel.setText(acc.getStatus().toString());</span>
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            boolean isVerified = acc.getStatus() == AccountStatus.VERIFIED;</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            boolean isSuspended = acc.getStatus() == AccountStatus.SUSPENDED;</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            boolean isClosed = acc.getStatus() == AccountStatus.CLOSED;</span>
+
+<span class="nc" id="L129">            withdrawButton.setEnabled(isVerified);</span>
+<span class="nc" id="L130">            transferButton.setEnabled(isVerified);</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">            depositButton.setEnabled(!isSuspended &amp;&amp; !isClosed);</span>
+<span class="nc" id="L132">        };</span>
+
+<span class="nc" id="L134">        java.util.function.BiConsumer&lt;Account, String&gt; logTransaction</span>
+<span class="nc" id="L135">                = (acc, msg) -&gt; historyMap.get(acc.getClientId()).add(msg);</span>
+
+<span class="nc" id="L137">        updateUI.run();</span>
+
+
+<span class="nc" id="L140">        switchUserButton.addActionListener(e -&gt; {</span>
+<span class="nc" id="L141">            currentIndex[0] = (currentIndex[0] + 1) % accounts.size();</span>
+<span class="nc" id="L142">            currentAccount[0] = accounts.get(currentIndex[0]);</span>
+
+<span class="nc" id="L144">            notificationBox.append(&quot;&gt;&gt;&gt; Switched to user: &quot;</span>
+<span class="nc" id="L145">                    + currentAccount[0].getClientName() + &quot;\n&quot;);</span>
+<span class="nc" id="L146">            updateUI.run();</span>
+<span class="nc" id="L147">        });</span>
+
+<span class="nc" id="L149">        depositButton.addActionListener(e -&gt; {</span>
+<span class="nc" id="L150">            Account acc = currentAccount[0];</span>
+            try {
+<span class="nc" id="L152">                double amount = Double.parseDouble(amountField.getText());</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                if (controller.deposit(acc, amount)) {</span>
+<span class="nc" id="L154">                    String msg = &quot;Deposit Successful: $&quot; + amount;</span>
+<span class="nc" id="L155">                    notificationBox.append(msg + &quot;\n&quot;);</span>
+<span class="nc" id="L156">                    logTransaction.accept(acc, msg);</span>
+<span class="nc" id="L157">                    updateUI.run();</span>
+<span class="nc" id="L158">                } else {</span>
+<span class="nc" id="L159">                    notificationBox.append(&quot;Deposit Failed.\n&quot;);</span>
+                }
+<span class="nc" id="L161">            } catch (NumberFormatException ex) {</span>
+<span class="nc" id="L162">                notificationBox.append(&quot;Invalid amount.\n&quot;);</span>
+<span class="nc" id="L163">            }</span>
+<span class="nc" id="L164">        });</span>
+
+<span class="nc" id="L166">        withdrawButton.addActionListener(e -&gt; {</span>
+<span class="nc" id="L167">            Account acc = currentAccount[0];</span>
+<span class="nc" id="L168">            String result = creditFeature.handleWithdrawal(acc, amountField.getText());</span>
+<span class="nc" id="L169">            notificationBox.append(result + &quot;\n&quot;);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            if (result.toLowerCase().contains(&quot;successful&quot;)) {</span>
+<span class="nc" id="L171">                logTransaction.accept(acc, &quot;Withdrawal: $&quot; + amountField.getText());</span>
+            }
+<span class="nc" id="L173">            updateUI.run();</span>
+<span class="nc" id="L174">        });</span>
+
+<span class="nc" id="L176">        transferButton.addActionListener(e -&gt; {</span>
+<span class="nc" id="L177">            Account from = currentAccount[0];</span>
+
+<span class="nc" id="L179">            String targetId = JOptionPane.showInputDialog(</span>
+                    frame, &quot;Enter Target Account Number (1001–1004):&quot;);
+
+<span class="nc bnc" id="L182" title="All 4 branches missed.">            if (targetId == null || targetId.trim().isEmpty()) {</span>
+<span class="nc" id="L183">                return;</span>
+            }
+
+<span class="nc bnc" id="L186" title="All 2 branches missed.">            if (targetId.equals(from.getClientId())) {</span>
+<span class="nc" id="L187">                notificationBox.append(&quot;Cannot transfer to yourself.\n&quot;);</span>
+<span class="nc" id="L188">                return;</span>
+            }
+
+<span class="nc" id="L191">            Account to = accountMap.get(targetId);</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (to == null) {</span>
+<span class="nc" id="L193">                notificationBox.append(&quot;Target account not found.\n&quot;);</span>
+<span class="nc" id="L194">                return;</span>
+            }
+
+            try {
+<span class="nc" id="L198">                double amount = Double.parseDouble(amountField.getText());</span>
+
+                // Now calling controller.transfer(from, to, amount)
+<span class="nc bnc" id="L201" title="All 2 branches missed.">                if (controller.transfer(from, to, amount)) {</span>
+<span class="nc" id="L202">                    logTransaction.accept(from,</span>
+<span class="nc" id="L203">                            &quot;Transferred $&quot; + amount + &quot; to &quot; + to.getClientName());</span>
+<span class="nc" id="L204">                    logTransaction.accept(to,</span>
+<span class="nc" id="L205">                            &quot;Received $&quot; + amount + &quot; from &quot; + from.getClientName());</span>
+
+<span class="nc" id="L207">                    notificationBox.append(&quot;Transfer completed to &quot; + to.getClientName() + &quot;\n&quot;);</span>
+<span class="nc" id="L208">                    updateUI.run();</span>
+                } else {
+<span class="nc" id="L210">                    notificationBox.append(&quot;Transfer failed.\n&quot;);</span>
+                }
+
+<span class="nc" id="L213">            } catch (NumberFormatException ex) {</span>
+<span class="nc" id="L214">                notificationBox.append(&quot;Invalid amount.\n&quot;);</span>
+<span class="nc" id="L215">            }</span>
+<span class="nc" id="L216">        });</span>
+
+        // Statement
+<span class="nc" id="L219">        viewStatementButton.addActionListener(e -&gt; {</span>
+<span class="nc" id="L220">            Account acc = currentAccount[0];</span>
+<span class="nc" id="L221">            notificationBox.append(&quot;\n--- Statement ---\n&quot;);</span>
+<span class="nc" id="L222">            notificationBox.append(&quot;Name: &quot; + acc.getClientName() + &quot;\n&quot;);</span>
+<span class="nc" id="L223">            notificationBox.append(&quot;Acc#: &quot; + acc.getClientId() + &quot;\n&quot;);</span>
+<span class="nc" id="L224">            notificationBox.append(&quot;Status: &quot; + acc.getStatus() + &quot;\n&quot;);</span>
+<span class="nc" id="L225">            notificationBox.append(&quot;Balance: $&quot; + acc.getBalance() + &quot;\n&quot;);</span>
+<span class="nc" id="L226">            notificationBox.append(&quot;Transactions:\n&quot;);</span>
+
+<span class="nc" id="L228">            List&lt;String&gt; logs = historyMap.get(acc.getClientId());</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">            if (logs.isEmpty()) {</span>
+<span class="nc" id="L230">                notificationBox.append(&quot; (No transactions)\n&quot;);</span>
+            } else {
+<span class="nc" id="L232">                logs.forEach(log -&gt; notificationBox.append(&quot; - &quot; + log + &quot;\n&quot;));</span>
+            }
+<span class="nc" id="L234">            notificationBox.append(&quot;-----------------\n&quot;);</span>
+<span class="nc" id="L235">        });</span>
+
+<span class="nc" id="L237">        frame.setVisible(true);</span>
+<span class="nc" id="L238">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Account.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Testing_project</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">Account.java</span></div><h1>Account.java</h1><pre class="source lang-java linenums">package com.example;
+
+public class Account {
+
+    private String clientId;
+    private String clientName;
+    private double balance;
+    private AccountStatus status;
+
+    public Account(String clientId, String clientName,
+<span class="fc" id="L11">                   double balance, AccountStatus status) {</span>
+<span class="fc" id="L12">        this.clientId = clientId;</span>
+<span class="fc" id="L13">        this.clientName = clientName;</span>
+<span class="fc" id="L14">        this.balance = balance;</span>
+<span class="fc" id="L15">        this.status = status;</span>
+<span class="fc" id="L16">    }</span>
+
+    public boolean withdraw(double amount) {
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        if (status != AccountStatus.VERIFIED) return false;</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (amount &gt; balance) return false;</span>
+<span class="fc" id="L21">        balance -= amount;</span>
+<span class="fc" id="L22">        return true;</span>
+    }
+
+    public double getBalance() {
+<span class="fc" id="L26">        return balance;</span>
+    }
+
+    public AccountStatus getStatus() {
+<span class="fc" id="L30">        return status;</span>
+    }
+
+    public boolean deposit(double amount) {
+<span class="fc bfc" id="L34" title="All 4 branches covered.">        if (status == AccountStatus.CLOSED || amount &lt;= 0) return false;</span>
+<span class="fc" id="L35">        balance += amount;</span>
+<span class="fc" id="L36">        return true;</span>
+    }
+
+    public void setStatus(AccountStatus status) {
+<span class="nc" id="L40">        this.status = status;</span>
+<span class="nc" id="L41">    }</span>
+
+    public boolean transfer(double amount) {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (status != AccountStatus.VERIFIED) return false;</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (amount &gt; balance) return false;</span>
+<span class="fc" id="L46">        balance -= amount;</span>
+<span class="fc" id="L47">        return true;</span>
+    }
+
+    public String getClientName() {
+<span class="nc" id="L51">        return clientName;</span>
+    }
+
+    public String getClientId() {
+<span class="fc" id="L55">        return clientId;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
